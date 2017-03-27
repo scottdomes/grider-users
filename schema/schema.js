@@ -94,12 +94,13 @@ const mutation = new GraphQLObjectType({
     editUser: {
       type: UserType,
       args: {
-        userId: { type: new GraphQLNonNull(GraphQLString) },
+        id: { type: new GraphQLNonNull(GraphQLString) },
         firstName: { type: GraphQLString },
         age: { type: GraphQLInt }
       },
-      resolve(parentValue, { userId, firstName, age }) {
-        return axios.patch(`http://localhost:3000/users/${userId}`, { firstName, age })
+      resolve(parentValue, args) {
+        // Send all args in body- id will be ignored
+        return axios.patch(`http://localhost:3000/users/${args.id}`, args)
           .then(response => response.data);
       }
     }
